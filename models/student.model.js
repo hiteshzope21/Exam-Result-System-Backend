@@ -53,6 +53,10 @@ const studentSchema = new mongoose.Schema({
         required : true,
     },
 
+    studentCreatedBy : {
+        type : String,
+    },
+
     userType : {
         type : String ,
         default : 'STUDENT',

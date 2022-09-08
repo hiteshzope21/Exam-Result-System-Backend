@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 function isToken(req, res , next){
 
     const token = req.headers["accesstoken"];
-    console.log(token);
+    // console.log(token);
     if( !token ){
         return res.status(403).send({
             message : "Token is not Provided"
@@ -16,6 +16,9 @@ function isToken(req, res , next){
             return res.status(401).send( "UnAuthorised");
         }
         req.id = decoded.id;
+
+        console.log(req.id);
+
         next();
 
     })
