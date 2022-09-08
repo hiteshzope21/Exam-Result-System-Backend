@@ -73,7 +73,26 @@ exports.createStudentInfo = async (req, res) => {
 exports.getStudentDetails = async (req, res) => {
   try {
     const faculty = await Faculty.findOne({ _id : req.id })
-    const studentsList = await Student.find({ studentCreatedBy : faculty.name});
+
+    const addFilters = {
+      studentCreatedBy : faculty.name,
+    };
+
+    if( req.query.enrollment ){
+      addFilters.enrollment = req.query.enrollment;
+    }
+
+    if( req.query.name ){
+      addFilters.name = req.query.name;
+    }
+    
+    if( req.query.name  && req.query.enrollment){
+      addFilters.name = req.query.name;
+      addFilters.enrollment = req.query.enrollment;
+    }
+
+
+    const studentsList = await Student.find( addFilters );
 
 
 
