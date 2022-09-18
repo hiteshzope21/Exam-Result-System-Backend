@@ -73,26 +73,7 @@ exports.createStudentInfo = async (req, res) => {
 exports.getStudentDetails = async (req, res) => {
   try {
     const faculty = await Faculty.findOne({ _id : req.id })
-
-    const addFilters = {
-      studentCreatedBy : faculty.name,
-    };
-
-    if( req.query.enrollment ){
-      addFilters.enrollment = req.query.enrollment;
-    }
-
-    if( req.query.name ){
-      addFilters.name = req.query.name;
-    }
-    
-    if( req.query.name  && req.query.enrollment){
-      addFilters.name = req.query.name;
-      addFilters.enrollment = req.query.enrollment;
-    }
-
-
-    const studentsList = await Student.find( addFilters );
+    const studentsList = await Student.find({ studentCreatedBy : faculty.name});
 
 
 
@@ -269,28 +250,6 @@ exports.getResultByEnrollment = async (req, res) => {
   if( studentsData == null ){
     res.status(400).send("No Data found for this Enrollment !" );
   }
-
-  // const getStudentRecord = {
-  //   /// name: studentsData.name,
-  //   fathername: studentsData.fathername,
-  //   email: studentsData.email,
-  //   semester: studentsData.semester,
-  //   enrollment: studentsData.enrollment,
-  //   course: studentsData.course,
-  //   branch:studentsData.branch,
-  //   mobile: studentsData.mobile,
-  //   college: studentsData.college,
-  //   subject01: studentsData.subject01,
-  //   subject02: studentsData.subject02,
-  //   subject03: studentsData.subject03,
-  //   subject04: studentsData.subject04,
-  //   subject05: studentsData.subject05,
-  //   marks01: studentsData.marks01,
-  //   marks02: studentsData.marks02,
-  //   marks03: studentsData.marks03,
-  //   marks04: studentsData.marks04,
-  //   marks05: studentsData.marks05,
-  // };
 
   res.status(200).send({
     status: 200,

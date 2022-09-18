@@ -32,7 +32,6 @@ async function signup( req ,res ){
 
         const newFaculty = {
             name : addedUser.name,
-            password : addedUser.password,
             email : addedUser.email,
             userType : addedUser.userType,
             college : addedUser.college
@@ -71,17 +70,12 @@ async function signin( req ,res ){
 
     const checkPassword = bcrypt.compareSync(req.body.password, faculty.password);
 
-    if (!checkPassword) {
+    if (!checkPassword ) {
         return res.status(401).send({
             success : false,
             message : "Password is not valid",
         } );
     }
-
-    // const token = jwt.sign({ id: user.userId }, config.secret, {
-    //     expiresIn: 600
-    // });
-
 
     const token = jwt.sign({ id: faculty.id }, process.env.SECRET, {
         expiresIn: '2h'
