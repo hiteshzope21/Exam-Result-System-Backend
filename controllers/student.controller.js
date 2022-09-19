@@ -29,6 +29,7 @@ exports.createStudentInfo = async (req, res) => {
   try {
     const faculty = await Faculty.findOne({ _id : req.id });
     StudentObj.studentCreatedBy = faculty.name;
+
     const student = await Student.create(StudentObj);
 
     const StudentInfoAdded = {
@@ -75,19 +76,13 @@ exports.getStudentDetails = async (req, res) => {
     const faculty = await Faculty.findOne({ _id : req.id })
     const studentsList = await Student.find({ studentCreatedBy : faculty.name});
 
-
-
-
-    if (!studentsList) {
+    if ( !studentsList ) {
       return res.status(200).send({
         message: "No Record Found !",
       });
     }
-console.log("Faculty : " , faculty.name);
-console.log("Students : ",studentsList);
 
     if( studentsList ){
-
       return res.status(200).send({
         message: "Student Fetched Successfully !",
         TotalRecords: studentsList.length,
@@ -100,7 +95,7 @@ console.log("Students : ",studentsList);
     }
   } catch (error) {
     console.log(error);
-    return res.status(200).send({
+    return res.status(500).send({
       message: error.messsage,
     });
   }
@@ -131,7 +126,8 @@ exports.getStudentByID = async (req, res) => {
   }
 };
 
-/** Update Student Record  */ exports.updateStudentByID = async (req, res) => {
+/** Update Student Record  */ 
+exports.updateStudentByID = async (req, res) => {
   const StudentObj = {
     name: req.body.name,
     fathername: req.body.fathername,
@@ -180,30 +176,6 @@ exports.getStudentByID = async (req, res) => {
       }
     ).exec();
 
-    console.log(updateStudent);
-
-    const updateStudentInfo = {
-      name: updateStudent.name,
-      fathername: updateStudent.fathername,
-      email: updateStudent.email,
-      semester: updateStudent.semester,
-      enrollment: updateStudent.enrollment,
-      course: updateStudent.course,
-      branch:updateStudent.branch,
-      mobile: updateStudent.mobile,
-      college: updateStudent.college,
-      subject01: updateStudent.subject01,
-      subject02: updateStudent.subject02,
-      subject03: updateStudent.subject03,
-      subject04: updateStudent.subject04,
-      subject05: updateStudent.subject05,
-      marks01: updateStudent.marks01,
-      marks02: updateStudent.marks02,
-      marks03: updateStudent.marks03,
-      marks04: updateStudent.marks04,
-      marks05: updateStudent.marks05,
-    };
-
     res.status(200).send({
       status: 200,
       message: ` ${StudentObj.name} Record Updated Successfully !`,
@@ -223,7 +195,6 @@ exports.deleteStudentByID = async (req, res) => {
   try {
     const studentsList = await Student.findByIdAndDelete(req.params.id);
 
-    console.log(studentsList);
     if (!studentsList) {
       return res.status(200).send({
         message: "No Record Found !",
@@ -245,7 +216,6 @@ exports.getResultByEnrollment = async (req, res) => {
 
   try{
     const studentsData = await Student.findOne({ enrollment : req.params.enrollment });
-    console.log( studentsData );
   
   if( studentsData == null ){
     res.status(400).send("No Data found for this Enrollment !" );
